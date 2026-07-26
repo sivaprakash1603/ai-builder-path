@@ -1,0 +1,28 @@
+# LLM Provider SDKs & Networking
+anthropic>=0.35.0
+openai>=1.40.0
+httpx>=0.27.0
+
+# Vector Math & Data Processing (From-Scratch RAG Engine)
+numpy>=1.24.0
+
+# Document Ingestion (No LangChain/LlamaIndex)
+pypdf>=4.0.0
+
+# Local Embeddings (Offline / Open-Source Support)
+sentence-transformers>=2.7.0
+torch>=2.0.0
+
+# Web Application & API Server
+fastapi>=0.110.0
+uvicorn>=0.29.0
+python-multipart>=0.0.9
+
+# Configuration & Utilities
+python-dotenv>=1.0.0
+pydantic>=2.6.0
+pydantic-settings>=2.2.0
+
+# Testing & Quality Assurance
+pytest>=8.0.0
+httpx>=0.27.0

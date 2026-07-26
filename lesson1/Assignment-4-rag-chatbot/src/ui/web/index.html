@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Antigravity RAG Studio — Enterprise AI Knowledge Engine</title>
+  <meta name="description" content="Custom RAG Chatbot built from scratch with Azure OpenAI Switching Endpoints, Claude Proxy, and Ollama support.">
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <!-- Ambient Gradient Glow Spheres -->
+  <div class="ambient-glow-1"></div>
+  <div class="ambient-glow-2"></div>
+
+  <div class="app-container">
+    <!-- Sidebar Controls -->
+    <aside class="sidebar">
+      <div class="brand-header">
+        <div class="logo-icon">AG</div>
+        <div>
+          <div class="brand-title">RAG Studio</div>
+          <div class="brand-subtitle">From Scratch Engine</div>
+        </div>
+      </div>
+
+      <!-- Provider & Endpoint Switching Section -->
+      <div class="section-card">
+        <div class="section-title">
+          <span>⚡ LLM Provider & Endpoints</span>
+          <span style="font-size:10px; color:var(--text-muted);">LIVE SWITCH</span>
+        </div>
+
+        <div class="provider-tabs">
+          <button class="tab-btn active" data-target="tab-anthropic" onclick="switchTab('anthropic')">Claude</button>
+          <button class="tab-btn" data-target="tab-azure" onclick="switchTab('azure_openai')">Azure OpenAI</button>
+          <button class="tab-btn" data-target="tab-ollama" onclick="switchTab('ollama')">Ollama</button>
+        </div>
+
+        <!-- Claude Tab -->
+        <div id="tab-anthropic" class="tab-content active">
+          <div class="form-group">
+            <label class="form-label">Proxy Base URL</label>
+            <input type="text" id="anthropic-base-url" class="form-input" value="https://proxy.llm-gateway.ready.presidio.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Auth Token / API Key</label>
+            <input type="password" id="anthropic-auth-token" class="form-input" placeholder="Enter Anthropic token...">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Model Name</label>
+            <input type="text" id="anthropic-model" class="form-input" value="claude-3-5-sonnet-20241022">
+          </div>
+          <button class="btn-primary" onclick="applyProviderSwitch('anthropic')">Apply Claude Switch</button>
+        </div>
+
+        <!-- Azure OpenAI Tab (Switching Endpoints) -->
+        <div id="tab-azure" class="tab-content">
+          <div class="form-group">
+            <label class="form-label">Azure Endpoint URL</label>
+            <input type="text" id="azure-endpoint" class="form-input" placeholder="https://your-resource.openai.azure.com/">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Azure API Key</label>
+            <input type="password" id="azure-api-key" class="form-input" placeholder="Enter Azure key...">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Deployment Name</label>
+            <input type="text" id="azure-deployment" class="form-input" value="gpt-4o">
+          </div>
+          <div class="form-group">
+            <label class="form-label">API Version</label>
+            <input type="text" id="azure-version" class="form-input" value="2024-08-01-preview">
+          </div>
+          <button class="btn-primary" onclick="applyProviderSwitch('azure_openai')">Apply Azure Endpoint</button>
+        </div>
+
+        <!-- Ollama Tab -->
+        <div id="tab-ollama" class="tab-content">
+          <div class="form-group">
+            <label class="form-label">Ollama Base URL</label>
+            <input type="text" id="ollama-url" class="form-input" value="http://localhost:11434">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Model Name</label>
+            <input type="text" id="ollama-model" class="form-input" value="llama3.1:8b">
+          </div>
+          <button class="btn-primary" onclick="applyProviderSwitch('ollama')">Apply Ollama Switch</button>
+        </div>
+      </div>
+
+      <!-- Knowledge Base Ingestion Section -->
+      <div class="section-card">
+        <div class="section-title">
+          <span>📚 Knowledge Base</span>
+          <span id="kb-stats-badge" style="font-size:11px; color:var(--accent-cyan);">0 Chunks</span>
+        </div>
+
+        <div class="dropzone" id="dropzone" onclick="document.getElementById('file-input').click()">
+          <div class="dropzone-icon">☁️</div>
+          <div class="dropzone-text">Click or Drag & Drop Document</div>
+          <div class="dropzone-subtext">Supports PDF, Markdown, TXT, CSV</div>
+          <input type="file" id="file-input" style="display:none" onchange="handleFileUpload(this.files)">
+        </div>
+
+        <div class="form-label" style="margin-top:6px;">Indexed Documents:</div>
+        <div class="doc-list" id="doc-list">
+          <div style="font-size:11px; color:var(--text-muted); text-align:center; padding:10px;">No documents indexed yet. Upload one above!</div>
+        </div>
+
+        <button class="btn-secondary" style="margin-top:4px; color:#ff6b6b; border-color:rgba(255,107,107,0.3);" onclick="clearKnowledgeBase()">Clear Knowledge Base</button>
+      </div>
+
+      <!-- RAG Hyperparameters Section -->
+      <div class="section-card">
+        <div class="section-title">
+          <span>⚙️ RAG Hyperparameters</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Top-K Retrieval: <span id="top-k-val" style="color:var(--accent-cyan); font-weight:700;">4</span></label>
+          <input type="range" id="top-k-slider" min="1" max="10" value="4" oninput="document.getElementById('top-k-val').innerText = this.value">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Similarity Threshold: <span id="thresh-val" style="color:var(--accent-cyan); font-weight:700;">0.25</span></label>
+          <input type="range" id="thresh-slider" min="0.0" max="0.8" step="0.05" value="0.25" oninput="document.getElementById('thresh-val').innerText = this.value">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Temperature: <span id="temp-val" style="color:var(--accent-cyan); font-weight:700;">0.3</span></label>
+          <input type="range" id="temp-slider" min="0.0" max="1.0" step="0.1" value="0.3" oninput="document.getElementById('temp-val').innerText = this.value">
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Chat Studio -->
+    <main class="chat-main">
+      <header class="chat-header">
+        <div class="header-info">
+          <h1>Enterprise RAG Assistant</h1>
+          <p>Powered by from-scratch NumPy vector search & dynamic LLM switching</p>
+        </div>
+        <div class="active-badge">
+          <div class="pulse-dot"></div>
+          <span id="active-provider-label">Provider: Claude (Proxy)</span>
+        </div>
+      </header>
+
+      <!-- Messages Area -->
+      <div class="chat-messages" id="chat-messages">
+        <!-- Initial Welcome Message -->
+        <div class="message assistant">
+          <div class="avatar">AI</div>
+          <div class="msg-bubble">
+            <strong>Welcome to Antigravity RAG Studio! 🚀</strong><br><br>
+            I am your intelligent enterprise RAG chatbot built completely from scratch without LangChain or LlamaIndex. Here is what you can do:
+            <ul style="margin-top:8px; margin-left:20px; display:flex; flex-direction:column; gap:6px;">
+              <li><strong>⚡ Switch Endpoints:</strong> Toggle dynamically between Azure OpenAI, Claude (via Proxy), or local Ollama using the sidebar controls!</li>
+              <li><strong>📚 Ingest Documents:</strong> Upload PDFs, Markdown, TXT, or CSV files to index them into our custom NumPy vector database.</li>
+              <li><strong>🔍 Inspect Citations:</strong> Ask any question and click on the retrieved source tags to inspect the exact matching chunks and cosine similarity scores!</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Input Bar -->
+      <footer class="chat-input-wrapper">
+        <form class="input-box" onsubmit="handleChatSubmit(event)">
+          <input type="text" id="chat-input-field" class="chat-input" placeholder="Ask a question about your documents... (Press Enter)" autocomplete="off">
+          <button type="submit" class="btn-send">➤</button>
+        </form>
+      </footer>
+    </main>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
