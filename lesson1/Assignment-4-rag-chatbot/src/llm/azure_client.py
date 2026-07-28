@@ -93,12 +93,29 @@ class AzureOpenAILLMProvider(BaseLLMProvider):
             })
 
         try:
-            response = self._client.chat.completions.create(
-                model=self._deployment_name,
-                messages=formatted_messages,
-                temperature=temperature,
-                max_tokens=max_tokens
-            )
+            kwargs = {
+                "model": self._deployment_name,
+                "messages": formatted_messages,
+                "temperature": temperature,
+                "max_completion_tokens": max_tokens
+            }
+            try:
+                response = self._client.chat.completions.create(**kwargs)
+            except Exception as inner_e:
+                err_msg = str(inner_e)
+                retry = False
+                if "max_completion_tokens" in err_msg or "unsupported_parameter" in err_msg:
+                    kwargs.pop("max_completion_tokens", None)
+                    if "max_completion_tokens" in err_msg:
+                        kwargs["max_tokens"] = max_tokens
+                    retry = True
+                if "temperature" in err_msg:
+                    kwargs.pop("temperature", None)
+                    retry = True
+                if retry:
+                    response = self._client.chat.completions.create(**kwargs)
+                else:
+                    raise inner_e
             
             choice = response.choices[0]
             usage = response.usage
