@@ -1,0 +1,14 @@
+langchain
+langchain-anthropic
+langchain-community
+langchain-core
+duckduckgo-search
+mcp
+google-api-python-client
+google-auth-httplib2
+google-auth-oauthlib
+faiss-cpu
+sentence-transformers
+pydantic
+python-dotenv
+streamlit
