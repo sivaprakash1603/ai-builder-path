@@ -1,0 +1,18 @@
+# Internal IT Documentation
+
+## VPN Setup
+To set up the VPN, please download the Cisco AnyConnect client from the IT portal.
+Install the software, enter the gateway address `vpn.company.internal`, and log in using your SSO credentials.
+If you face issues, ensure your multi-factor authentication (MFA) app is up to date.
+
+## Approved Software
+The following software is approved for company use:
+- IDEs: VS Code, IntelliJ IDEA, PyCharm
+- Communication: Slack, Zoom, Microsoft Teams
+- Design: Figma, Adobe Creative Cloud
+Do not install unapproved third-party applications without prior consent from the IT Security team.
+
+## Requesting a New Laptop
+To request a new laptop, you must submit a ticket via Jira IT Service Desk under the category "Hardware Request".
+Standard issuance is a 14-inch MacBook Pro (M3 Pro, 32GB RAM) for engineering or a Dell Latitude for business roles.
+Requests require manager approval and take approximately 3-5 business days to fulfill.

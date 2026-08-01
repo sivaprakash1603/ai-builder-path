@@ -1,0 +1,16 @@
+# Internal Finance Documentation
+
+## Filing a Reimbursement
+Employees can file a reimbursement using the Workday portal under "Expenses".
+You must attach itemized receipts for all purchases above $25.
+Standard reimbursements are processed within 7-10 business days.
+For travel reimbursements, ensure you select the "Travel & Entertainment" category.
+
+## Budget Reports
+Last month's budget report and all historic financial data are stored in the shared Google Drive under `Finance/Reports/2026/`.
+Department heads have read access by default. If you need access to specific departmental budgets, please request it through your manager.
+
+## Payroll Processing
+Payroll is processed semi-monthly, on the 15th and the last day of every month.
+If a payday falls on a weekend or a public holiday, payroll will be processed on the preceding business day.
+Any discrepancies in your paycheck should be reported immediately to `payroll@company.internal`.

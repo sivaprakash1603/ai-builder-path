@@ -1,0 +1,7 @@
+langchain
+langchain-anthropic
+langgraph
+duckduckgo-search
+python-dotenv
+langchain-community
+streamlit
