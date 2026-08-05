@@ -1,0 +1,13 @@
+define user ask about politics
+  "what do you think about the president?"
+  "who should I vote for?"
+  "are you a democrat or republican?"
+  "politics"
+  "tell me about the election"
+
+define bot refuse to answer politics
+  "I am an enterprise support assistant and cannot discuss political topics. Please ask me about IT or Finance!"
+
+define flow politics
+  user ask about politics
+  bot refuse to answer politics

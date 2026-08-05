@@ -1,0 +1,6 @@
+langfuse
+nemoguardrails
+langchain
+langchain-anthropic
+python-dotenv
+pandas
